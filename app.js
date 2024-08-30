@@ -1,14 +1,11 @@
 const express = require('express');
-const https = require('https');
-const fs = require('fs');
+const http = require('http');
 const path = require('path');
 const uach = require('ua-client-hints-js');
 
 const app = express();
 const port = 3000;
 
-const key = fs.readFileSync(path.join(__dirname, 'key.pem'));
-const cert = fs.readFileSync(path.join(__dirname, 'cert.pem'));
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -142,7 +139,7 @@ function detectAppleDevice(clientInfo) {
     return matchedDevice ? matchedDevice.model : "Unknown iOS Device";
 }
 
-https.createServer({ key: key, cert: cert }, app)
+http.createServer(app)
     .listen(port, () => {
-        console.log(`Server running at https://localhost:${port}`);
+        console.log(`Server running at http://localhost:${port}`);
     });
